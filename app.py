@@ -194,8 +194,23 @@ def load_model():
         with open(os.path.join(SCRIPT_DIR, "model.pkl"), 'rb') as f:
             model_data = pickle.load(f)
         
-        # Load Keras model
-        model = tf.keras.models.load_model(os.path.join(SCRIPT_DIR, "lstm_model.keras"))
+        window_size = model_data['window_size']
+        
+        # Rebuild model architecture (must match save_model.py)
+        model = tf.keras.Sequential([
+            tf.keras.layers.LSTM(
+                64,
+                activation='tanh',
+                return_sequences=False,
+                input_shape=(window_size, 1)
+            ),
+            tf.keras.layers.Dropout(0.2),
+            tf.keras.layers.Dense(1)
+        ])
+        model.compile(optimizer='adam', loss='mse')
+        
+        # Load weights
+        model.load_weights(os.path.join(SCRIPT_DIR, "lstm_weights.weights.h5"))
         
         return model, model_data
     except Exception as e:

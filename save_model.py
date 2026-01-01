@@ -99,14 +99,14 @@ print(f"RMSE: {rmse:.3f} m")
 print(f"MAE: {mae:.3f} m")
 print(f"R² Score: {r2:.3f}")
 
-# Save model and scaler
-print("\nSaving model to model.pkl...")
-model.save(os.path.join(SCRIPT_DIR, "lstm_model.keras"))
+# Save model weights and scaler
+print("\nSaving model weights to lstm_weights.weights.h5...")
+model.save_weights(os.path.join(SCRIPT_DIR, "lstm_weights.weights.h5"))
 
 model_data = {
     'scaler': scaler,
     'window_size': window_size,
-    'model_path': 'lstm_model.keras',
+    'weights_path': 'lstm_weights.weights.h5',
     'rmse': rmse,
     'mae': mae,
     'r2': r2
@@ -118,4 +118,4 @@ with open(os.path.join(SCRIPT_DIR, "model.pkl"), 'wb') as f:
 print("Model saved successfully!")
 print(f"Files created:")
 print(f"  - model.pkl (scaler and metadata)")
-print(f"  - lstm_model.keras (trained LSTM model)")
+print(f"  - lstm_weights.weights.h5 (model weights)")
